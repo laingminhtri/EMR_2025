@@ -74,115 +74,22 @@
   </div>
 
   <script>
+    const validUser = 'user_demo';
+    const validPass = 'Test@123456';
+
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const userID = document.getElementById('userID').value.trim();
       const password = document.getElementById('password').value;
-  
-      const validUser = 'user_demo';
-      const validPass = 'Test@123456';
-  
+
+      // Kiểm tra thông tin đăng nhập
       if (userID === validUser && password === validPass) {
+        // Đăng nhập thành công, chuyển hướng đến trang dashboard
         window.location.href = 'dashboard.html';
       } else {
         alert('Sai ID hoặc mật khẩu. Vui lòng thử lại!');
       }
     });
   </script>
-
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const userID = document.getElementById('userID').value;
-      const password = document.getElementById('password').value;
-
-      // Đơn giản hóa việc đăng nhập - sau này thay bằng Firebase Auth
-      if (userID && password) {
-        window.location.href = 'dashboard.html';
-      } else {
-        alert('Vui lòng nhập đầy đủ thông tin!');
-      }
-    });
-  </script>
-
-
-
-    <script>
-        $(function () {            
-            // First register any plugins
-            $.fn.filepond.registerPlugin(FilePondPluginImagePreview);
-
-            // Turn input element into a pond
-            $('.uploader').filepond({
-
-                // maximum allowed file size
-                maxFileSize: '5MB',
-
-                // crop the image to a 1:1 ratio
-                imageCropAspectRatio: '1:1',
-
-                // resize the image
-                imageResizeTargetWidth: 500,
-
-                imagePreviewMaxHeight: window.innerHeight * 3 / 5,
-
-                // upload to this server end point
-                server: {
-                    url: '/upload_file',
-                    timeout: 60000,
-                    process: {
-                        method: 'POST',
-                        withCredentials: false,
-                        onload: (response) => {
-                            var result = window.document.querySelector("#result-message");
-                            if (response == '[[1.0]]') {
-                                result.classList.add('text-success');
-                                result.textContent = "NON-NODULE";
-                            } else {
-                                result.textContent = "NODULE";
-                                result.classList.add('text-danger');
-                            }
-                            result.classList.add("animate__animated", "animate__bounceInUp");
-                        }
-                    },
-                },
-            });
-
-
-            $('.uploader').filepond('allowMultiple', true);
-
-            $('.uploader').on('FilePond:addfile', function (e) {
-                var result = window.document.querySelector("#result-message");
-                result.classList.remove('animate__animated', 'animate__bounceInUp', 'text-danger', 'text-success');
-                result.textContent = "";
-            });
-
-            $('.uploader').on('FilePond:addfile', function (e) {
-                console.log('file added event', e);
-            });
-        });
-    </script>
-
-
-    <script>
-        function runScript() {
-            fetch('/run-script', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    const resultsDiv = document.getElementById('results');
-                    resultsDiv.innerHTML = '';
-                    data.forEach(result => {
-                        const p = document.createElement('p');
-                        p.textContent = result;
-                        resultsDiv.appendChild(p);
-                    });
-                });
-        }
-    </script>
-
-
-
-
-
 </body>
 </html>
