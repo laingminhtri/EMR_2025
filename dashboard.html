@@ -222,5 +222,42 @@
 
   </script>
 
+
+<script>
+  let model;
+  // Tải mô hình TensorFlow.js từ GitHub Pages
+  async function loadModel() {
+    model = await tf.loadLayersModel('https://your-username.github.io/your-repository-name/model.json');
+    console.log("Model loaded successfully!");
+  }
+
+  loadModel();
+
+  // Xử lý ảnh từ input và thực hiện dự đoán
+  document.getElementById('predictBtn').addEventListener('click', async () => {
+    const imageElement = document.getElementById('image').files[0];
+    if (!imageElement) {
+      alert("Please upload an image.");
+      return;
+    }
+
+    const img = await loadImage(imageElement);
+    const prediction = await model.predict(img);
+    document.getElementById('predictionResult').innerText = `Prediction: ${prediction}`;
+  });
+
+  // Hàm xử lý ảnh
+  function loadImage(file) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const tensor = tf.browser.fromPixels(img).resizeNearestNeighbor([224, 224]).toFloat().expandDims();
+        resolve(tensor);
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  }
+</script>
+
 </body>
 </html>
