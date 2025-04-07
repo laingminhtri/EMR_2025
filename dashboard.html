@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard - Phân tích hồ sơ EMR</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Thêm Font Awesome cho icon người dùng -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -33,8 +34,48 @@
       margin-top: 30px;
       font-size: 14px;
     }
+
+  }
+
+/* User info section */
+.user-info {
+  position: fixed; /* Đảm bảo phần thông tin người dùng luôn cố định ở góc trên bên phải */
+  top: 10px; /* Đặt cách cạnh trên 10px */
+  right: 10px; /* Đặt cách cạnh phải 10px */
+  background: #2e7d32; /* Màu nền của phần thông tin người dùng */
+  color: #fff; /* Màu chữ trắng */
+  padding: 10px 20px; /* Padding xung quanh */
+  border-radius: 10px; /* Bo tròn các góc */
+  display: flex; /* Sử dụng flexbox để căn chỉnh nội dung bên trong */
+  justify-content: space-between; /* Căn chỉnh khoảng cách giữa username và nút */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  z-index: 1000; /* Đảm bảo phần này luôn ở trên cùng */
+  font-size: 16px; /* Cỡ chữ cho phần tên người dùng */
+}
+
+
+.user-info .username {
+      font-size: 16px;
+    }
+    .user-info button {
+      background: #c62828;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .user-info button:hover {
+      background: #b71c1c;
+    }
   </style>
 </head>
+
+<!-- User info section with icon and logout button -->
+<div class="user-info">
+  <span class="username"><i class="fas fa-user-circle"></i> Chào, user_demo</span>
+  <button id="logoutButton">Đăng xuất</button>
+</div>
+
 <body>
   <div class="container">
     <h1>Chào mừng đến với Dashboard - Phân tích Hồ sơ EMR</h1>
@@ -56,7 +97,17 @@
     </div>
   </div>
 
-
+  <script>
+    // Hàm đăng xuất
+    document.getElementById('logoutButton').addEventListener('click', function() {
+      // Nếu bạn đang sử dụng sessionStorage hoặc localStorage để lưu thông tin người dùng,
+      // hãy xóa thông tin người dùng khi đăng xuất
+      sessionStorage.removeItem('user'); // Hoặc localStorage.removeItem('user');
+  
+      // Chuyển hướng về trang đăng nhập (index.html)
+      window.location.href = 'index.html'; // Thay 'login.html' bằng trang đăng nhập của bạn
+    });
+  </script>
 
   <script>
     // Tải mô hình từ URL của bạn trên GitHub Pages
