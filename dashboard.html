@@ -1,105 +1,104 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - EMR</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <title>Dashboard - Phân tích hồ sơ EMR</title>
   <style>
     body {
-      background-color: #f2fdf2;
+      font-family: Arial, sans-serif;
+      background: #e8f5e9;
+      margin: 0;
+      padding: 0;
     }
-    .navbar {
-      background-color: #28a745;
-    }
-    .navbar-brand, .nav-link, .text-white {
-      color: white !important;
-    }
-    .tab-content {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 10px;
-    }
-    .upload-zone {
-      border: 2px dashed #ccc;
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      background: #fff;
       padding: 30px;
-      text-align: center;
-      color: #888;
-      margin-top: 20px;
       border-radius: 10px;
-      transition: 0.3s;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
     }
-    .upload-zone:hover {
-      border-color: #28a745;
-      color: #28a745;
-      cursor: pointer;
+    h1 {
+      color: #2e7d32;
+    }
+    .file-upload-container {
+      margin-top: 20px;
+    }
+    #result-message {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    .contact {
+      margin-top: 30px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">🧠 Dashboard EMR</a>
-      <div class="d-flex align-items-center">
-        <span class="me-3 text-white">👤 user_demo</span>
-        <button class="btn btn-outline-light btn-sm" onclick="logout()">Đăng xuất</button>
+  <div class="container">
+    <h1>Chào mừng đến với Dashboard - Phân tích Hồ sơ EMR</h1>
+    <p>Hãy chọn ảnh để phân tích và xem kết quả phân loại "Nodule" hoặc "Non-Nodule".</p>
+
+    <div class="file-upload-container">
+      <h2>Chọn ảnh để phân tích</h2>
+      <input type="file" id="upload" class="uploader" accept="image/*">
+      <div id="result-message" class="text-center">
+        <!-- Kết quả phân tích sẽ hiển thị ở đây -->
       </div>
     </div>
-  </nav>
 
-  <!-- Tabs -->
-  <div class="container mt-4">
-    <ul class="nav nav-tabs" id="emrTabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="tab-emr" data-bs-toggle="tab" data-bs-target="#emr" type="button" role="tab">
-          📁 Hồ sơ bệnh án (EMR)
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tab-analysis" data-bs-toggle="tab" data-bs-target="#analysis" type="button" role="tab">
-          📊 Phân tích EMR chuyên sâu
-        </button>
-      </li>
-    </ul>
-
-    <div class="tab-content" id="emrTabsContent">
-      <!-- EMR Tab -->
-      <div class="tab-pane fade show active" id="emr" role="tabpanel">
-        <h5 class="mt-3">Tải lên hồ sơ bệnh án (.pdf, .csv, .xlsx, .jpg, .png)</h5>
-        <div class="upload-zone" onclick="document.getElementById('emrFile').click()">
-          👉 Bấm hoặc kéo thả file EMR tại đây
-          <input type="file" id="emrFile" accept=".csv,.xlsx,.pdf,.jpg,.png" style="display: none;" onchange="handleUpload(this, 'emrResult')"/>
-        </div>
-        <div id="emrResult" class="mt-3 text-success fw-bold"></div>
-      </div>
-
-      <!-- Phân tích EMR chuyên sâu Tab -->
-      <div class="tab-pane fade" id="analysis" role="tabpanel">
-        <h5 class="mt-3">Tải lên dữ liệu phân tích EMR (.pdf, .csv, .xlsx, .jpg, .png)</h5>
-        <div class="upload-zone" onclick="document.getElementById('analysisFile').click()">
-          👉 Bấm hoặc kéo thả file phân tích tại đây
-          <input type="file" id="analysisFile" accept=".csv,.xlsx,.pdf,.jpg,.png" style="display: none;" onchange="handleUpload(this, 'analysisResult')"/>
-        </div>
-        <div id="analysisResult" class="mt-3 text-primary fw-bold"></div>
-      </div>
+    <div class="contact">
+      <p><strong>Liên hệ:</strong><br>
+      Công ty TNHH MTV Minh Trí và những người bạn Marie Curie<br>
+      159 Nam Kỳ Khởi Nghĩa, Quận 3, Tp. Hồ Chí Minh<br>
+      Lại Nguyễn Minh Trí - <a href="mailto:laingminhtri@gmail.com">laingminhtri@gmail.com</a> - 0908083566</p>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Include FilePond Styles -->
+  <link href="https://cdn.jsdelivr.net/npm/filepond@4.30.3/dist/filepond.css" rel="stylesheet" />
+  
+  <!-- Include FilePond Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/filepond@4.30.3/dist/filepond.js"></script>
+  
   <script>
-    function logout() {
-      window.location.href = "index.html";
-    }
+    FilePond.registerPlugin(FilePondPluginImagePreview);
 
-    function handleUpload(input, resultId) {
-      const file = input.files[0];
-      if (file) {
-        document.getElementById(resultId).innerText = `📄 File đã chọn: ${file.name}`;
-      }
-    }
+    // Turn the input element into a FilePond uploader
+    const pond = FilePond.create(document.querySelector('.uploader'));
+
+    pond.setOptions({
+      maxFileSize: '5MB',
+      imageResizeTargetWidth: 500,
+      imageCropAspectRatio: '1:1',
+      imagePreviewMaxHeight: window.innerHeight * 3 / 5,
+      server: {
+        url: '/upload_file',
+        timeout: 60000,
+        process: {
+          method: 'POST',
+          withCredentials: false,
+          onload: (response) => {
+            const result = document.getElementById("result-message");
+            if (response === '[[1.0]]') {
+              result.classList.add('text-success');
+              result.textContent = "NON-NODULE";
+            } else {
+              result.textContent = "NODULE";
+              result.classList.add('text-danger');
+            }
+            result.classList.add("animate__animated", "animate__bounceInUp");
+          },
+        },
+      },
+    });
+
+    pond.on('FilePond:addfile', function () {
+      const result = document.getElementById("result-message");
+      result.classList.remove('animate__animated', 'animate__bounceInUp', 'text-danger', 'text-success');
+      result.textContent = "";
+    });
   </script>
 </body>
 </html>
