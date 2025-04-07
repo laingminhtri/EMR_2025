@@ -104,5 +104,96 @@
       }
     });
   </script>
+
+
+input type="file" class="filepond uploader" name="file" multiple data-allow-reorder="true" data-max-file-size="3MB" data-max-files="1">
+                <div class="result text-center">
+                    <div class="" id="result-message"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script>
+        $(function () {            
+            // First register any plugins
+            $.fn.filepond.registerPlugin(FilePondPluginImagePreview);
+
+            // Turn input element into a pond
+            $('.uploader').filepond({
+
+                // maximum allowed file size
+                maxFileSize: '5MB',
+
+                // crop the image to a 1:1 ratio
+                imageCropAspectRatio: '1:1',
+
+                // resize the image
+                imageResizeTargetWidth: 500,
+
+                imagePreviewMaxHeight: window.innerHeight * 3 / 5,
+
+                // upload to this server end point
+                server: {
+                    url: '/upload_file',
+                    timeout: 60000,
+                    process: {
+                        method: 'POST',
+                        withCredentials: false,
+                        onload: (response) => {
+                            var result = window.document.querySelector("#result-message");
+                            if (response == '[[1.0]]') {
+                                result.classList.add('text-success');
+                                result.textContent = "NON-NODULE";
+                            } else {
+                                result.textContent = "NODULE";
+                                result.classList.add('text-danger');
+                            }
+                            result.classList.add("animate__animated", "animate__bounceInUp");
+                        }
+                    },
+                },
+            });
+
+
+            $('.uploader').filepond('allowMultiple', true);
+
+            $('.uploader').on('FilePond:addfile', function (e) {
+                var result = window.document.querySelector("#result-message");
+                result.classList.remove('animate__animated', 'animate__bounceInUp', 'text-danger', 'text-success');
+                result.textContent = "";
+            });
+
+            $('.uploader').on('FilePond:addfile', function (e) {
+                console.log('file added event', e);
+            });
+        });
+    </script>
+
+
+    <script>
+        function runScript() {
+            fetch('/run-script', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = '';
+                    data.forEach(result => {
+                        const p = document.createElement('p');
+                        p.textContent = result;
+                        resultsDiv.appendChild(p);
+                    });
+                });
+        }
+    </script>
+
+
+
+
+
 </body>
 </html>
