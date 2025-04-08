@@ -1,13 +1,24 @@
-
 from flask import Flask, request, jsonify
 import tensorflow as tf
 from werkzeug.utils import secure_filename
 import os
+import gdown
 
 app = Flask(__name__)
 
+# URL của file model trên Google Drive
+MODEL_URL = 'https://drive.google.com/uc?export=download&id=1EpAgsWQSXi7CsUO8mEQDGAJyjdfN0T6n'
+
+# Đường dẫn lưu file model
+MODEL_PATH = 'best_weights_model.keras'
+
+# Kiểm tra xem model đã có trong thư mục chưa, nếu chưa thì tải về
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model from Google Drive...")
+    gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+
 # Load the trained model
-model = tf.keras.models.load_model('best_weights_model.keras')
+model = tf.keras.models.load_model(MODEL_PATH)
 
 # Set upload folder and allowed file extensions
 UPLOAD_FOLDER = 'uploads/'
