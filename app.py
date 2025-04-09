@@ -6,6 +6,25 @@ import gdown
 
 app = Flask(__name__)
 
+
+import requests
+import os
+
+MODEL_PATH = "best_weights_model.keras"
+GOOGLE_DRIVE_URL = "https://drive.google.com/uc?export=download&id=1EpAgsWQSXi7CsUO8mEQDGAJyjdfN0T6n"
+
+# Download model if not already downloaded
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model from Google Drive...")
+    response = requests.get(GOOGLE_DRIVE_URL)
+    with open(MODEL_PATH, "wb") as f:
+        f.write(response.content)
+    print("Download complete.")
+
+# Load model
+model = tf.keras.models.load_model(MODEL_PATH)
+
+
 # URL của file model trên Google Drive
 MODEL_URL = 'https://drive.google.com/uc?export=download&id=1EpAgsWQSXi7CsUO8mEQDGAJyjdfN0T6n'
 
