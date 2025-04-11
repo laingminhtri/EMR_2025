@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 
 # ======= TẢI MODEL TỪ GOOGLE DRIVE NẾU CHƯA CÓ =======
-MODEL_PATH = "best_weights_model.keras"
+MODEL_PATH = "/opt/render/project/src/best_weights_model.keras"
 FILE_ID = "1EpAgsWQSXi7CsUO8mEQDGAJyjdfN0T6n"
 
 if not os.path.exists(MODEL_PATH):
