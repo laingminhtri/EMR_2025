@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Tùy chọn: tắt CUDA nếu không dùng GPU
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Tắt GPU nếu không cần thiết
 
 import gdown
 from flask import Flask, request, jsonify
@@ -18,7 +18,7 @@ if not os.path.exists(MODEL_PATH):
 
 # ======= KHỞI TẠO FLASK APP & LOAD MODEL =======
 app = Flask(__name__)
-model = load_model(MODEL_PATH)
+model = load_model(MODEL_PATH)  # Load model từ file đã tải về
 
 @app.route("/predict", methods=["POST"])
 def predict():
