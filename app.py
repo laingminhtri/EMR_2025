@@ -1,15 +1,15 @@
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Tùy chọn: tắt CUDA nếu không dùng GPU
+
 import gdown
 from flask import Flask, request, jsonify
 from keras.models import load_model
 import numpy as np
-import tensorflow as tf
 from PIL import Image
-import io
 
 # ======= TẢI MODEL TỪ GOOGLE DRIVE NẾU CHƯA CÓ =======
 MODEL_PATH = "best_weights_model.keras"
-FILE_ID = "1EpAgsWQSXi7CsUO8mEQDGAJyjdfN0T6n"  # <-- Thay bằng file ID thật của bạn
+FILE_ID = "1EpAgsWQSXi7CsUO8mEQDGAJyjdfN0T6n"
 
 if not os.path.exists(MODEL_PATH):
     print("Downloading model from Google Drive...")
@@ -20,15 +20,12 @@ if not os.path.exists(MODEL_PATH):
 app = Flask(__name__)
 model = load_model(MODEL_PATH)
 
-# # Load model (upload model.keras lên Render project cùng source code luôn)
-# model = load_model("model.keras")
-
 @app.route("/predict", methods=["POST"])
 def predict():
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'}), 400
     file = request.files['file']
-    img = Image.open(file.stream).resize((224, 224))  # Resize tùy kiến trúc model
+    img = Image.open(file.stream).resize((224, 224))
     img_array = np.expand_dims(np.array(img)/255.0, axis=0)
 
     prediction = model.predict(img_array)
@@ -36,4 +33,5 @@ def predict():
     return jsonify({"result": result})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Render sẽ dùng biến PORT để chạy Flask
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
